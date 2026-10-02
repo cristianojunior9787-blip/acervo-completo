@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acervo Completo - Modelos prontos para o seu negócio</title>
+<style>
+:root{--roxo:#6C4CFF;--roxo-esc:#3D2B8C;--lilas:#DED6FF;--verde:#22C55E;--creme:#FAF9F7;--tinta:#1E1E23;--branco:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--creme);color:var(--tinta);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:var(--roxo-esc);color:var(--branco);padding:28px 16px 64px}
+.wrap{max-width:1180px;margin:0 auto}
+h1{margin:0;font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.15}
+header p{margin:6px 0 0;color:var(--lilas)}
+.how{background:var(--lilas);color:var(--roxo-esc);border-radius:16px;padding:18px 20px;margin:-40px auto 20px;max-width:1180px;box-shadow:0 2px 0 var(--roxo)}
+.how h2{margin:0 0 8px;font-size:1rem;letter-spacing:.02em}
+.how ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;counter-reset:p}
+.how li{counter-increment:p;background:var(--branco);border-radius:12px;padding:10px 12px 10px 46px;position:relative;font-weight:600;color:var(--tinta)}
+.how li::before{content:counter(p);position:absolute;left:10px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:var(--roxo);color:var(--branco);display:grid;place-items:center;font-size:.85rem}
+.bar{background:var(--creme);padding:10px 0;border-bottom:1px solid var(--lilas)}
+.bar input{width:100%;font:inherit;padding:12px 14px;border:2px solid var(--lilas);border-radius:12px;background:var(--branco);color:var(--tinta)}
+.bar input:focus,.chip:focus-visible,.btn:focus-visible,.more:focus-visible{outline:3px solid var(--roxo);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:10px 0 2px}
+.chip{flex:none;font:inherit;font-size:.9rem;font-weight:600;padding:7px 14px;border-radius:999px;border:2px solid var(--lilas);background:var(--branco);color:var(--roxo-esc);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--roxo);border-color:var(--roxo);color:var(--branco)}
+.count{margin:14px 0 10px;color:var(--roxo-esc);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.card{background:var(--branco);border:1px solid var(--lilas);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.pv{aspect-ratio:4/5;background:var(--lilas);display:grid;place-items:center}
+.pv img{max-width:100%;max-height:100%;display:block}
+.info{padding:12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.nome{font-weight:700;line-height:1.25;margin:0;font-size:.98rem}
+.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.78rem;color:#5a5a66}
+.tag{background:var(--lilas);color:var(--roxo-esc);border-radius:999px;padding:2px 10px;font-weight:600}
+.btn{margin-top:auto;display:block;text-align:center;text-decoration:none;background:var(--verde);color:var(--tinta);font-weight:700;padding:11px 10px;border-radius:10px}
+.btn:hover{filter:brightness(.95)}
+.vazio{padding:40px 12px;text-align:center;color:var(--roxo-esc)}
+.more{display:block;margin:24px auto 40px;font:inherit;font-weight:700;padding:12px 28px;border-radius:12px;border:2px solid var(--roxo);background:var(--branco);color:var(--roxo);cursor:pointer}
+footer{padding:0 16px 32px;text-align:center;color:#5a5a66;font-size:.85rem}
+@media(max-width:760px){.chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}.how ol{grid-template-columns:1fr 1fr}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.info{padding:10px}.btn{font-size:.9rem}}
+@media(max-width:420px){.how ol{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>Acervo Completo</h1>
+<p>Modelos prontos em imagem para o seu negócio. Escolha, baixe e use.</p>
+</div></header>
+
+<div style="padding:0 16px"><section class="how" aria-labelledby="how-t">
+<h2 id="how-t">COMO PERSONALIZAR:</h2>
+<ol>
+<li>Escolha seu modelo</li>
+<li>Baixe a imagem</li>
+<li>Envie para o Canva</li>
+<li>Personalize e use no seu negócio</li>
+</ol>
+</section></div>
+
+<main class="wrap" style="padding:0 16px">
+<div class="bar">
+<input id="q" type="search" placeholder="Buscar por nome, categoria ou segmento (ex.: Pizzaria, Dia das Mães, desconto)" aria-label="Buscar modelo" autocomplete="off">
+<div class="chips" id="chips" role="group" aria-label="Filtrar por categoria"></div>
+</div>
+<p class="count" id="count" aria-live="polite"></p>
+<div class="grid" id="grid"></div>
+<button class="more" id="more" hidden>Mostrar mais modelos</button>
+</main>
+<footer>Arquivos em JPG, organizados por categoria na pasta “modelos”.</footer>
+
+<script src="catalogo.js"></script>
+<script>
+(function(){
+var D=window.ACERVO,C=D.categorias,PAGE=48;
+var norm=function(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()};
+var all=D.itens.map(function(i){var c=C[i[1]];return{nome:i[0],cat:i[1],f:i[2],k:norm(i[0]+" "+c.nome+" "+i[3])}});
+var cat=-1,term="",shown=0,list=[];
+var $g=document.getElementById("grid"),$c=document.getElementById("count"),$m=document.getElementById("more"),$q=document.getElementById("q"),$ch=document.getElementById("chips");
+function chip(label,id,n){var b=document.createElement("button");b.className="chip";b.type="button";b.textContent=label+" ("+n+")";b.setAttribute("aria-pressed",id===cat);b.onclick=function(){cat=id;[].forEach.call($ch.children,function(x){x.setAttribute("aria-pressed",x===b)});apply()};$ch.appendChild(b)}
+chip("Todos",-1,all.length);
+C.forEach(function(c,i){chip(c.nome,i,all.filter(function(a){return a.cat===i}).length)});
+function card(a){
+var c=C[a.cat],p=c.id+"/"+a.f,e=document.createElement("article");e.className="card";
+var pv=document.createElement("div");pv.className="pv";
+var im=new Image();im.loading="lazy";im.decoding="async";im.alt="Prévia: "+a.nome;im.src="miniaturas/"+p;pv.appendChild(im);
+var inf=document.createElement("div");inf.className="info";
+var h=document.createElement("h3");h.className="nome";h.textContent=a.nome;
+var m=document.createElement("div");m.className="meta";
+var t=document.createElement("span");t.className="tag";t.textContent=c.nome;
+var s=document.createElement("span");s.textContent=c.w+"×"+c.h+" px, JPG";m.appendChild(t);m.appendChild(s);
+var d=document.createElement("a");d.className="btn";d.href="modelos/"+p;d.setAttribute("download",a.f);d.textContent="⬇ Baixar Modelo";
+inf.appendChild(h);inf.appendChild(m);inf.appendChild(d);e.appendChild(pv);e.appendChild(inf);return e}
+function more(){var fr=document.createDocumentFragment();list.slice(shown,shown+PAGE).forEach(function(a){fr.appendChild(card(a))});shown=Math.min(shown+PAGE,list.length);$g.appendChild(fr);$m.hidden=shown>=list.length}
+function apply(){
+var k=norm(term.trim()).split(/\s+/).filter(Boolean);
+list=all.filter(function(a){return(cat<0||a.cat===cat)&&k.every(function(w){return a.k.indexOf(w)>-1})});
+$g.innerHTML="";shown=0;
+$c.textContent=list.length+(list.length===1?" modelo encontrado":" modelos encontrados");
+if(!list.length){$g.innerHTML='<p class="vazio">Nenhum modelo encontrado. Tente outra palavra ou escolha “Todos”.</p>';$m.hidden=true;return}
+more()}
+var tm;$q.addEventListener("input",function(){clearTimeout(tm);tm=setTimeout(function(){term=$q.value;apply()},150)});
+$m.onclick=more;apply();
+if("IntersectionObserver" in window)new IntersectionObserver(function(e){if(e[0].isIntersecting&&!$m.hidden)more()},{rootMargin:"800px"}).observe($m);
+})();
+</script>
+</body>
+</html>
